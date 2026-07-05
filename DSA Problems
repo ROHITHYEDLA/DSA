@@ -1,0 +1,20 @@
+#1137 tribonacci number
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        t=[0,1,1]
+        #base case
+        if n<3:
+            return t[n]
+        #recursive case
+        for i in range(3,n+1):
+            t[0],t[1],t[2]=t[1],t[2],sum(t)
+        return t[2]
+
+
+#237 powwer of two
+#this is basic code where we can get output but it shows time limit exceeded
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        while n%2==0:
+            n//=2
+        return n==1
