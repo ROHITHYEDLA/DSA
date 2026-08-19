@@ -1,0 +1,63 @@
+import java.util.*;
+
+class Solution {
+    public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
+
+        // Store reserved seats for each row
+        Map<Integer, Set<Integer>> reserved = new HashMap<>();
+
+        for (int[] seat : reservedSeats) {
+            int row = seat[0];
+            int col = seat[1];
+
+            reserved
+                .computeIfAbsent(row, k -> new HashSet<>())
+                .add(col);
+        }
+
+        // Every row with no reserved seats can fit 2 families
+        int answer = (n - reserved.size()) * 2;
+
+        // Check rows that contain reserved seats
+        for (Set<Integer> seats : reserved.values()) {
+
+            boolean left = true;   // seats 2,3,4,5
+            boolean middle = true; // seats 4,5,6,7
+            boolean right = true;  // seats 6,7,8,9
+
+            // Check left group
+            for (int seat = 2; seat <= 5; seat++) {
+                if (seats.contains(seat)) {
+                    left = false;
+                    break;
+                }
+            }
+
+            // Check middle group
+            for (int seat = 4; seat <= 7; seat++) {
+                if (seats.contains(seat)) {
+                    middle = false;
+                    break;
+                }
+            }
+
+            // Check right group
+            for (int seat = 6; seat <= 9; seat++) {
+                if (seats.contains(seat)) {
+                    right = false;
+                    break;
+                }
+            }
+
+            if (left && right) {
+                // Both families can sit
+                answer += 2;
+            } else if (left || middle || right) {
+                // Only one family can sit
+                answer += 1;
+            }
+        }
+
+        return answer;
+    }
+}
